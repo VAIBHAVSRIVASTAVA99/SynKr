@@ -16,7 +16,6 @@ const CreateGroupModal = ({ isOpen, onClose }) => {
   const { authUser } = useAuthStore();
   const { createGroup } = useGroupStore();
 
-  // Reset state when modal opens/closes
   useEffect(() => {
     if (isOpen) {
       setGroupName('');
@@ -24,7 +23,6 @@ const CreateGroupModal = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
-  // Filter out the current user from potential group members
   const potentialMembers = users.filter(user => user._id !== authUser._id);
 
   const toggleUserSelection = (user) => {

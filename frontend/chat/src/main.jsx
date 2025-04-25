@@ -5,6 +5,10 @@ import App from "./App.jsx";
 
 import { BrowserRouter } from "react-router-dom";
 
+// Log environment variables
+// console.log("API URL:", import.meta.env.VITE_API_URL);
+// console.log("Socket URL:", import.meta.env.VITE_SOCKET_URL);
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>

@@ -7,10 +7,24 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5001',
+        target: process.env.VITE_API_URL || 'http://localhost:5001',
         changeOrigin: true,
         secure: false,
       },
     },
   },
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+  },
+  define: {
+    'process.env': process.env
+  }
 })

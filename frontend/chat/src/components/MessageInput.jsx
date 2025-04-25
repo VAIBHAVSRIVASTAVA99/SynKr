@@ -18,7 +18,6 @@ const MessageInput = () => {
   const { sendMessage } = useChatStore();
   const { selectedGroup, sendGroupMessage } = useGroupStore();
 
-  // Handle file uploads
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -47,7 +46,6 @@ const MessageInput = () => {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  // 🎤 Start Recording
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -79,7 +77,6 @@ const MessageInput = () => {
     }
   };
 
-  // ⏹️ Stop Recording
   const stopRecording = () => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();

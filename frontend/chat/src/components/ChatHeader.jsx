@@ -14,7 +14,6 @@ const ChatHeader = ({ group, memberCount, onGroupInfoClick }) => {
   const { selectedGroup } = useGroupStore();
   
   
-  // For individual user chat header
   if (selectedUser) {
     const isOnline = onlineUsers.includes(selectedUser._id);
    
@@ -45,7 +44,6 @@ const ChatHeader = ({ group, memberCount, onGroupInfoClick }) => {
     );
   }
 
-  // For group chat header
   if (selectedGroup) {
     return (
       <div className="p-4 border-b border-primary-600/10 bg-background/95 backdrop-blur-sm">

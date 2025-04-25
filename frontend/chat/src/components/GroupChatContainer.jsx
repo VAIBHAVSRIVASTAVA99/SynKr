@@ -19,7 +19,6 @@ const GroupChatContainer = ({ group }) => {
   const { socket, isConnected } = useSocketStore();
   const { authUser } = useAuthStore();
 
-  // Fetch user details for a given user ID
   const fetchUserDetails = async (userId) => {
     try {
       const response = await axiosInstance.get(`/api/users/${userId}`);
@@ -34,13 +33,10 @@ const GroupChatContainer = ({ group }) => {
     }
   };
 
-  // Process message to include user details
   const processMessage = async (message) => {
-    // Extract sender ID from the nested structure
     const senderId = message.senderId?._id;
     if (!senderId) return message;
 
-    // If the message already has sender details in senderId object, use those
     if (message.senderId?.fullName) {
       return {
         ...message,
@@ -49,7 +45,6 @@ const GroupChatContainer = ({ group }) => {
       };
     }
 
-    // If we already have user details in cache, use them
     if (userDetails[senderId]) {
       return {
         ...message,
@@ -58,12 +53,10 @@ const GroupChatContainer = ({ group }) => {
       };
     }
 
-    // Otherwise fetch user details
     try {
       const response = await axiosInstance.get(`/api/users/${senderId}`);
       const user = response.data;
       
-      // Update userDetails cache
       setUserDetails(prev => ({
         ...prev,
         [senderId]: user
@@ -80,7 +73,6 @@ const GroupChatContainer = ({ group }) => {
     }
   };
 
-  // Message sending handler
   const handleSendMessage = (content) => {
     if (socket && isConnected) {
       const messageToSave = {
@@ -111,7 +103,6 @@ const GroupChatContainer = ({ group }) => {
     }
   };
 
-  // Fetch existing messages when component mounts
   useEffect(() => {
     const fetchMessages = async () => {
       try {
@@ -131,7 +122,6 @@ const GroupChatContainer = ({ group }) => {
     }
   }, [group._id]);
 
-  // Socket connection for real-time messages
   useEffect(() => {
     if (socket && isConnected && group._id) {
       socket.on('groupMessage', (message) => {

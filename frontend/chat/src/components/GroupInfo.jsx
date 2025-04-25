@@ -35,7 +35,6 @@ const GroupInfo = ({ group, onClose }) => {
 
   return (
     <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
-      {/* Header */}
       <div className="flex justify-between items-center p-4 border-b">
         <h2 className="text-xl font-semibold flex items-center gap-2">
           <Users className="size-6" />
@@ -46,7 +45,6 @@ const GroupInfo = ({ group, onClose }) => {
         </button>
       </div>
 
-      {/* Group Details */}
       <div className="p-4">
         <div className="mb-4">
           <h3 className="text-lg font-medium">{group.name}</h3>
@@ -55,7 +53,6 @@ const GroupInfo = ({ group, onClose }) => {
           )}
         </div>
 
-        {/* Members List */}
         <div>
           <div className="flex justify-between items-center mb-2">
             <h4 className="font-medium">Members</h4>
@@ -70,7 +67,6 @@ const GroupInfo = ({ group, onClose }) => {
             )}
           </div>
 
-          {/* Add Member Section */}
           {showAddMember && (
             <div className="mb-4 p-2 border rounded-md">
               <h5 className="text-sm font-medium mb-2">Select a user to add:</h5>
@@ -93,7 +89,6 @@ const GroupInfo = ({ group, onClose }) => {
             </div>
           )}
 
-          {/* Members List */}
           <div className="space-y-2">
             {group.members.map((member) => (
               <div
@@ -127,7 +122,6 @@ const GroupInfo = ({ group, onClose }) => {
         </div>
       </div>
 
-      {/* Footer */}
       {isAdmin && (
         <div className="p-4 border-t">
           <button

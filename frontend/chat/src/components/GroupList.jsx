@@ -12,7 +12,6 @@ const GroupList = ({ onGroupSelect }) => {
 
   return (
     <div className="flex flex-col h-full bg-[#3B5998]">
-      {/* Header */}
       <div className="p-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button className="text-white px-4 py-2">Contacts</button>
@@ -24,7 +23,6 @@ const GroupList = ({ onGroupSelect }) => {
         </button>
       </div>
 
-      {/* Groups List */}
       <div className="flex-1 overflow-y-auto">
         {loading ? (
           <div className="text-white text-center p-4">Loading groups...</div>
