@@ -168,7 +168,7 @@ const MessageInput = () => {
           <Input
             type="text"
             className={cn(
-              "w-full bg-background/50 border-primary-600/20 focus-visible:ring-primary-600/30",
+              "w-full bg-background/50 border-primary-600/20 text-black focus-visible:ring-primary-600/30",
               "placeholder:text-muted-foreground/50"
             )}
             placeholder={selectedGroup ? "Type a message to the group..." : "Type a message..."}
