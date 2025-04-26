@@ -1,16 +1,19 @@
 import { io } from "socket.io-client";
 
-const SOCKET_URL = 
-  (import.meta.env?.VITE_SOCKET_URL || 
-   import.meta.env?.REACT_APP_SOCKET_URL || 
-   "http://localhost:5001");
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "https://synkr-o8iz.onrender.com";
 
 const socket = io(SOCKET_URL, {
   autoConnect: false,
   reconnection: true,
   reconnectionAttempts: 10,
   reconnectionDelay: 1000,
-  timeout: 10000
+  timeout: 10000,
+  transports: ['websocket', 'polling'],
+  path: '/socket.io/',
+  withCredentials: true,
+  extraHeaders: {
+    "Access-Control-Allow-Origin": "*"
+  }
 });
 
 let isInitialized = false;
@@ -90,6 +93,5 @@ export const getSocketStatus = () => {
 export const isSocketConnected = () => {
   return socket.connected;
 };
-
 
 export default socket;

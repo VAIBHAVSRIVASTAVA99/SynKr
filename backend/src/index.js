@@ -17,7 +17,11 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'http://localhost:4173'],
+    origin: [
+      'http://localhost:5173', 
+      'http://localhost:4173',
+      'https://syn-kr-7nqa-h2g5b5r1x-vaibhav-srivastavas-projects-02619579.vercel.app'
+    ],
     credentials: true,
   })
 );
