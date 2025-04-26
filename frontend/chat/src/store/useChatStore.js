@@ -60,18 +60,15 @@ export const useChatStore = create((set, get) => ({
     const socket = useAuthStore.getState().socket;
     if (!socket) return;
 
-    // Listen for all incoming messages
     socket.on("newMessage", (newMessage) => {
       const { selectedUser, messages } = get();
       
-      // If we have a selected user and the message is from/to them, add it to messages
       if (selectedUser && 
           (newMessage.senderId === selectedUser._id || newMessage.receiverId === selectedUser._id)) {
         set({ messages: [...messages, newMessage] });
       }
     });
 
-    // Listen for user online status updates
     socket.on("userOnline", (userId) => {
       set(state => ({
         users: state.users.map(user => 
@@ -80,7 +77,6 @@ export const useChatStore = create((set, get) => ({
       }));
     });
 
-    // Listen for user offline status updates
     socket.on("userOffline", (userId) => {
       set(state => ({
         users: state.users.map(user => 

@@ -17,7 +17,6 @@ export const setupEmailService = async () => {
       },
     });
 
-    // Verify connection configuration
     await transporter.verify();
     console.log("Email service configured successfully");
   } catch (error) {

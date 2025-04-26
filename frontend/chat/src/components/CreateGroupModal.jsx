@@ -106,7 +106,7 @@ const CreateGroupModal = ({ isOpen, onClose }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">
+            <label className="block text-sm font-medium mb-2 text-white">
               Select Group Members
             </label>
             <div className="text-white max-h-60 overflow-y-auto rounded-lg border border-primary-600/20 divide-y divide-primary-600/10">

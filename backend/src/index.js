@@ -18,8 +18,8 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: [
-      'https://synkr-2.vercel.app/',  // New main production URL
-      /^https:\/\/synkr-2-.*\.vercel\.app$/ // Any preview deployment for this project
+      'https://synkr-2.vercel.app/', 
+      /^https:\/\/synkr-2-.*\.vercel\.app$/ 
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
