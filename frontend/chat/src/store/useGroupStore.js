@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import axios from 'axios';
+import { axiosInstance } from '../lib/axios';
 import { toast } from 'react-hot-toast';
 import { io } from 'socket.io-client';
 
@@ -20,9 +20,7 @@ const useGroupStore = create((set, get) => {
     fetchGroups: async () => {
       try {
         set({ loading: true, error: null });
-        const response = await axios.get('/api/groups', {
-          withCredentials: true,
-        });
+        const response = await axiosInstance.get('/api/groups');
         console.log('Fetched groups:', response.data); // Debug log
         set({ groups: response.data || [], loading: false });
       } catch (error) {
@@ -35,12 +33,11 @@ const useGroupStore = create((set, get) => {
         });
       }
     },
+
     getGroupMessages: async (groupId) => {
       try {
         set({ isGroupMessagesLoading: true, error: null });
-        const response = await axios.get(`/api/messages/group/${groupId}`, {
-          withCredentials: true,
-        });
+        const response = await axiosInstance.get(`/api/messages/group/${groupId}`);
         set({ groupMessages: response.data || [], isGroupMessagesLoading: false });
       } catch (error) {
         set({ error: error.message, isGroupMessagesLoading: false, groupMessages: [] });
@@ -52,7 +49,6 @@ const useGroupStore = create((set, get) => {
       }
     },
 
-    
     subscribeToGroupMessages: () => {
       const { socket, selectedGroup } = get();
       if (!socket || !selectedGroup) return;
@@ -76,10 +72,9 @@ const useGroupStore = create((set, get) => {
         const { socket, selectedGroup } = get();
         if (!socket || !selectedGroup) return;
 
-        const response = await axios.post(
-          `/api/messages/send/${selectedGroup._id}`,
-          { ...messageData, groupId: selectedGroup._id },
-          { withCredentials: true }
+        const response = await axiosInstance.post(
+          `/api/messages/group/${selectedGroup._id}`,
+          { ...messageData, groupId: selectedGroup._id }
         );
 
         socket.emit('groupMessage', response.data);
@@ -98,9 +93,7 @@ const useGroupStore = create((set, get) => {
     createGroup: async (groupData) => {
       try {
         set({ loading: true, error: null });
-        const response = await axios.post('/api/groups', groupData, {
-          withCredentials: true,
-        });
+        const response = await axiosInstance.post('/api/groups', groupData);
         set((state) => ({
           groups: [...(state.groups || []), response.data],
           loading: false,
@@ -117,13 +110,13 @@ const useGroupStore = create((set, get) => {
         return null;
       }
     },
+
     addMember: async (groupId, userId) => {
       try {
         set({ loading: true, error: null });
-        const response = await axios.post(
+        const response = await axiosInstance.post(
           `/api/groups/${groupId}/members`,
-          { userId },
-          { withCredentials: true }
+          { userId }
         );
         set((state) => ({
           groups: (state.groups || []).map((group) =>
@@ -145,9 +138,9 @@ const useGroupStore = create((set, get) => {
     removeMember: async (groupId, userId) => {
       try {
         set({ loading: true, error: null });
-        const response = await axios.delete(
+        const response = await axiosInstance.delete(
           `/api/groups/${groupId}/members`,
-          { data: { userId }, withCredentials: true }
+          { data: { userId } }
         );
         set((state) => ({
           groups: (state.groups || []).map((group) =>
@@ -169,9 +162,7 @@ const useGroupStore = create((set, get) => {
     deleteGroup: async (groupId) => {
       try {
         set({ loading: true, error: null });
-        await axios.delete(`/api/groups/${groupId}`, {
-          withCredentials: true,
-        });
+        await axiosInstance.delete(`/api/groups/${groupId}`);
         set((state) => ({
           groups: (state.groups || []).filter((group) => group._id !== groupId),
           selectedGroup: null,
