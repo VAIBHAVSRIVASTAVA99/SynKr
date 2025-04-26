@@ -4,6 +4,12 @@
 
 ---
 
+## Watch a quick demo!!!
+
+https://github.com/user-attachments/assets/2f7e1aec-e8e0-4968-b0fa-e46f704722ad
+
+---
+
 ## 🌟 **Why Synkr?**
 
 - ⚡️ **Blazing Fast** – Built on **WebSockets**, ensuring real-time performance  
