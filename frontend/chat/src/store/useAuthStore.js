@@ -14,6 +14,7 @@ export const useAuthStore = create((set, get) => ({
   isCheckingAuth: true,
   onlineUsers: [],
   socket: null,
+  isSocketConnecting: false,
   
   checkAuth: async () => {
     try {
@@ -113,11 +114,17 @@ export const useAuthStore = create((set, get) => ({
   },
   
   connectSocket: () => {
-    const { authUser } = get();
-    if (!authUser || get().socket?.connected) return;
+    const { authUser, socket, isSocketConnecting } = get();
+    
+    // Don't try to connect if already connected or connecting
+    if (!authUser || socket?.connected || isSocketConnecting) {
+      return;
+    }
+    
+    set({ isSocketConnecting: true });
     
     try {
-      const socket = io(BASE_URL, {
+      const newSocket = io(BASE_URL, {
         query: {
           userId: authUser._id,
         },
@@ -132,8 +139,9 @@ export const useAuthStore = create((set, get) => ({
         }
       });
       
-      socket.on("connect", () => {
+      newSocket.on("connect", () => {
         console.log("Socket connected successfully");
+        set({ socket: newSocket, isSocketConnecting: false });
         toast.success("Connected to chat server", {
           style: {
             color: '#ffffff' 
@@ -141,8 +149,9 @@ export const useAuthStore = create((set, get) => ({
         });
       });
       
-      socket.on("connect_error", (err) => {
+      newSocket.on("connect_error", (err) => {
         console.error("Socket connection error:", err);
+        set({ isSocketConnecting: false });
         toast.error("Failed to connect to chat server", {
           style: {
             color: '#ffffff' 
@@ -150,22 +159,22 @@ export const useAuthStore = create((set, get) => ({
         });
       });
       
-      socket.on("disconnect", (reason) => {
+      newSocket.on("disconnect", (reason) => {
         console.log("Socket disconnected:", reason);
         if (reason === "io server disconnect") {
           // Server initiated disconnect, try to reconnect
-          socket.connect();
+          newSocket.connect();
         }
       });
       
-      socket.on("getOnlineUsers", (userIds) => {
+      newSocket.on("getOnlineUsers", (userIds) => {
         set({ onlineUsers: userIds });
       });
       
-      socket.connect();
-      set({ socket: socket });
+      newSocket.connect();
     } catch (error) {
       console.error("Failed to connect socket:", error);
+      set({ isSocketConnecting: false });
       toast.error("Failed to initialize chat connection", {
         style: {
           color: '#ffffff' 
@@ -175,9 +184,10 @@ export const useAuthStore = create((set, get) => ({
   },
   
   disconnectSocket: () => {
-    const socket = get().socket;
+    const { socket } = get();
     if (socket?.connected) {
       socket.disconnect();
+      set({ socket: null, isSocketConnecting: false });
       console.log("Socket disconnected");
     }
   }
