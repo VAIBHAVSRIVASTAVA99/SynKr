@@ -41,6 +41,7 @@ export const useChatStore = create((set, get) => ({
       set({ isMessagesLoading: false });
     }
   },
+
   sendMessage: async (messageData) => {
     const { selectedUser, messages } = get();
     try {
@@ -55,25 +56,47 @@ export const useChatStore = create((set, get) => ({
     }
   },
 
-  subscribeToMessages: () => {
-    const { selectedUser } = get();
-    if (!selectedUser) return;
-
+  initializeSocket: () => {
     const socket = useAuthStore.getState().socket;
+    if (!socket) return;
 
+    // Listen for all incoming messages
     socket.on("newMessage", (newMessage) => {
-      const isMessageSentFromSelectedUser = newMessage.senderId === selectedUser._id;
-      if (!isMessageSentFromSelectedUser) return;
+      const { selectedUser, messages } = get();
+      
+      // If we have a selected user and the message is from/to them, add it to messages
+      if (selectedUser && 
+          (newMessage.senderId === selectedUser._id || newMessage.receiverId === selectedUser._id)) {
+        set({ messages: [...messages, newMessage] });
+      }
+    });
 
-      set({
-        messages: [...get().messages, newMessage],
-      });
+    // Listen for user online status updates
+    socket.on("userOnline", (userId) => {
+      set(state => ({
+        users: state.users.map(user => 
+          user._id === userId ? { ...user, isOnline: true } : user
+        )
+      }));
+    });
+
+    // Listen for user offline status updates
+    socket.on("userOffline", (userId) => {
+      set(state => ({
+        users: state.users.map(user => 
+          user._id === userId ? { ...user, isOnline: false } : user
+        )
+      }));
     });
   },
 
-  unsubscribeFromMessages: () => {
+  cleanupSocket: () => {
     const socket = useAuthStore.getState().socket;
+    if (!socket) return;
+
     socket.off("newMessage");
+    socket.off("userOnline");
+    socket.off("userOffline");
   },
 
   setSelectedUser: (selectedUser) => set({ selectedUser }),
