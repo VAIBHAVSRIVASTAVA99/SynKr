@@ -17,8 +17,8 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: 'https://syn-kr.vercel.app',
-    credentials: true,
+    origin: '*',
+    credentials: false,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
   })
