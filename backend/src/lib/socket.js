@@ -6,13 +6,10 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: [
-      'http://localhost:5173', 
-      'http://localhost:4173',
-      'https://syn-kr-7nqa-u6egs2rhj-vaibhav-srivastavas-projects-02619579.vercel.app/',
-      'https://syn-kr-7nqa-u6egs2rhj-vaibhav-srivastavas-projects-02619579.vercel.app'
-    ],
-    credentials: true
+    origin: '*',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
   }
 });
 
