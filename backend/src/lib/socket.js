@@ -29,16 +29,6 @@ io.on("connection", (socket) => {
   const userId = socket.handshake.query.userId;
   if (userId) userSocketMap[userId] = socket.id;
 
-  // Join group rooms
-  const groupIds = socket.handshake.query.groupIds;
-  if (groupIds) {
-    const groups = groupIds.split(',');
-    groups.forEach(groupId => {
-      socket.join(groupId);
-      console.log(`User ${userId} joined group ${groupId}`);
-    });
-  }
-
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
   socket.on("disconnect", () => {
