@@ -86,12 +86,13 @@ export const sendMessage = async (req, res) => {
     }
 
     if (groupId) {
-      const group = await Group.findById(groupId);
+      const group = await Group.findById(groupId).populate('members', '_id');
       if (!group) {
         return res.status(404).json({ message: "Group not found" });
       }
 
-      if (!group.members.includes(senderId) && group.admin.toString() !== senderId.toString()) {
+      if (!group.members.some(member => member._id.toString() === senderId.toString()) && 
+          group.admin.toString() !== senderId.toString()) {
         return res.status(403).json({ message: "You are not a member of this group" });
       }
 
@@ -113,6 +114,14 @@ export const sendMessage = async (req, res) => {
       });
 
       await newMessage.save();
+      
+      // Emit the message to all group members
+      io.to(groupId).emit("newGroupMessage", {
+        ...newMessage.toObject(),
+        groupId: group._id,
+        groupName: group.name
+      });
+      
       return res.status(201).json(newMessage);
     }
 
@@ -130,6 +139,13 @@ export const sendMessage = async (req, res) => {
     });
 
     await newMessage.save();
+    
+    // Emit the message to the receiver
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
+    
     res.status(201).json(newMessage);
   } catch (error) {
     console.log("Error in sendMessage:", error.message);
