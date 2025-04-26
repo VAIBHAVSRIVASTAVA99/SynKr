@@ -2,7 +2,6 @@ import Message from "../models/message.model.js";
 import User from "../models/user.model.js";
 import Group from "../models/group.model.js";
 import cloudinary from "../lib/cloudinary.js";
-import { io, getReceiverSocketId } from "../lib/socket.js";
 
 export const getUserForSidebar = async (req, res) => {
   try {
@@ -114,14 +113,6 @@ export const sendMessage = async (req, res) => {
       });
 
       await newMessage.save();
-      
-      // Emit the message to all group members
-      io.to(groupId).emit("newGroupMessage", {
-        ...newMessage.toObject(),
-        groupId: group._id,
-        groupName: group.name
-      });
-      
       return res.status(201).json(newMessage);
     }
 
@@ -139,13 +130,6 @@ export const sendMessage = async (req, res) => {
     });
 
     await newMessage.save();
-    
-    // Emit the message to the receiver
-    const receiverSocketId = getReceiverSocketId(receiverId);
-    if (receiverSocketId) {
-      io.to(receiverSocketId).emit("newMessage", newMessage);
-    }
-    
     res.status(201).json(newMessage);
   } catch (error) {
     console.log("Error in sendMessage:", error.message);
