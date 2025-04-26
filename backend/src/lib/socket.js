@@ -9,7 +9,8 @@ const io = new Server(server, {
     origin: [
       'http://localhost:5173', 
       'http://localhost:4173',
-      'https://syn-kr-7nqa-h2g5b5r1x-vaibhav-srivastavas-projects-02619579.vercel.app'
+      'https://syn-kr-7nqa-u6egs2rhj-vaibhav-srivastavas-projects-02619579.vercel.app/',
+      'https://syn-kr-7nqa-u6egs2rhj-vaibhav-srivastavas-projects-02619579.vercel.app'
     ],
     credentials: true
   }
