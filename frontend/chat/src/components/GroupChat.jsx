@@ -104,8 +104,8 @@ const GroupChat = ({ groupId }) => {
         <div ref={messagesEndRef} />
       </div>
 
-      <form onSubmit={handleSendMessage} className="text-white p-4 bg-white border-t">
-        <div className="flex gap-2 text-white">
+      <form onSubmit={handleSendMessage} className="text-black p-4 bg-white border-t">
+        <div className="flex gap-2 text-black">
           <input
             type="text"
             value={newMessage}
