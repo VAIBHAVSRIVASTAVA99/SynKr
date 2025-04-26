@@ -18,9 +18,8 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: [
-      'https://syn-kr-7nqa.vercel.app',  // Main production URL
-      'https://syn-kr-7nqa-9oe4uqslx-vaibhav-srivastavas-projects-02619579.vercel.app', // Current preview
-      /^https:\/\/syn-kr-7nqa-.*\.vercel\.app$/ // Any preview deployment
+      'https://synkr-2.vercel.app/',  // New main production URL
+      /^https:\/\/synkr-2-.*\.vercel\.app$/ // Any preview deployment for this project
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
