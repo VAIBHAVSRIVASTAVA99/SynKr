@@ -9,5 +9,6 @@ router.get("/:id", protectRoute, getMessages);
 router.get("/group/:groupId", protectRoute, getGroupMessages);
 
 router.post("/send/:id", protectRoute, sendMessage);
+router.post("/group/send", protectRoute, sendMessage);
 
 export default router;
