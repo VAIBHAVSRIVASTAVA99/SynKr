@@ -1,6 +1,7 @@
 import { io } from "socket.io-client";
 
 console.log('VITE_SOCKET_URL:', import.meta.env.VITE_SOCKET_URL);
+console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
 console.log('Default Socket URL:', "https://synkr-o8iz.onrender.com");
 console.log('Final Socket URL being used:', import.meta.env.VITE_SOCKET_URL || "https://synkr-o8iz.onrender.com");
 
