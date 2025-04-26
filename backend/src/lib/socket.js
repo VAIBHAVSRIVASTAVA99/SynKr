@@ -7,7 +7,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [
-      'https://synkr-2.vercel.app/',
+      'https://synkr-2.vercel.app',
       /^https:\/\/synkr-2-.*\.vercel\.app$/ 
     ],
     credentials: true,

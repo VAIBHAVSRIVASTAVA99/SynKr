@@ -57,7 +57,7 @@ export const extractData = async (url, selectors) => {
   }
 };
 
-// Cleanup function to close browser
+
 export const cleanup = async () => {
   if (browser) {
     await browser.close();

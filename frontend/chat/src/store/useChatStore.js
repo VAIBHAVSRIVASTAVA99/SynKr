@@ -58,9 +58,15 @@ export const useChatStore = create((set, get) => ({
 
   initializeSocket: () => {
     const socket = useAuthStore.getState().socket;
-    if (!socket) return;
+    if (!socket) {
+      console.warn("Socket not available for chat initialization");
+      return;
+    }
+
+    console.log("Initializing chat socket events");
 
     socket.on("newMessage", (newMessage) => {
+      console.log("New message received:", newMessage);
       const { selectedUser, messages } = get();
       
       if (selectedUser && 
@@ -70,6 +76,7 @@ export const useChatStore = create((set, get) => ({
     });
 
     socket.on("userOnline", (userId) => {
+      console.log("User online:", userId);
       set(state => ({
         users: state.users.map(user => 
           user._id === userId ? { ...user, isOnline: true } : user
@@ -78,11 +85,20 @@ export const useChatStore = create((set, get) => ({
     });
 
     socket.on("userOffline", (userId) => {
+      console.log("User offline:", userId);
       set(state => ({
         users: state.users.map(user => 
           user._id === userId ? { ...user, isOnline: false } : user
         )
       }));
+    });
+
+    socket.on("error", (error) => {
+      console.error("Socket error in chat:", error);
+    });
+
+    socket.on("connect_error", (error) => {
+      console.error("Socket connection error in chat:", error);
     });
   },
 
@@ -90,9 +106,13 @@ export const useChatStore = create((set, get) => ({
     const socket = useAuthStore.getState().socket;
     if (!socket) return;
 
+    console.log("Cleaning up chat socket events");
+
     socket.off("newMessage");
     socket.off("userOnline");
     socket.off("userOffline");
+    socket.off("error");
+    socket.off("connect_error");
   },
 
   setSelectedUser: (selectedUser) => set({ selectedUser }),

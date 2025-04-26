@@ -18,7 +18,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: [
-      'https://synkr-2.vercel.app/', 
+      'https://synkr-2.vercel.app', 
       /^https:\/\/synkr-2-.*\.vercel\.app$/ 
     ],
     credentials: true,

@@ -5,6 +5,7 @@ import { ChatSidebar } from "../components/ChatSidebar";
 import { ChatMessages } from "../components/ChatMessages";
 import { ChatInput } from "../components/ChatInput";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 export const Chat = () => {
   const navigate = useNavigate();
@@ -29,13 +30,24 @@ export const Chat = () => {
       return;
     }
 
+    // Initialize socket connection
+    if (!socket?.connected) {
+      toast.error("Not connected to chat server. Please refresh the page.", {
+        style: {
+          color: '#ffffff' 
+        }
+      });
+      return;
+    }
+
+    // Initialize chat functionality
     getUsers();
     initializeSocket();
 
     return () => {
       cleanupSocket();
     };
-  }, [user, navigate, getUsers, initializeSocket, cleanupSocket]);
+  }, [user, navigate, getUsers, initializeSocket, cleanupSocket, socket]);
 
   useEffect(() => {
     if (selectedUser) {
@@ -45,6 +57,14 @@ export const Chat = () => {
 
   const handleSendMessage = async (message) => {
     if (!selectedUser) return;
+    if (!socket?.connected) {
+      toast.error("Not connected to chat server. Please refresh the page.", {
+        style: {
+          color: '#ffffff' 
+        }
+      });
+      return;
+    }
     await sendMessage({ content: message });
   };
 

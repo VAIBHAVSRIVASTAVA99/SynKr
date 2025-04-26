@@ -124,15 +124,38 @@ export const useAuthStore = create((set, get) => ({
         reconnection: true,
         reconnectionDelay: 1000,
         reconnectionAttempts: 5,
-        transports: ["websocket", "polling"]
+        transports: ["websocket", "polling"],
+        path: "/socket.io/",
+        withCredentials: true,
+        extraHeaders: {
+          "Access-Control-Allow-Origin": "*"
+        }
       });
       
       socket.on("connect", () => {
         console.log("Socket connected successfully");
+        toast.success("Connected to chat server", {
+          style: {
+            color: '#ffffff' 
+          }
+        });
       });
       
       socket.on("connect_error", (err) => {
         console.error("Socket connection error:", err);
+        toast.error("Failed to connect to chat server", {
+          style: {
+            color: '#ffffff' 
+          }
+        });
+      });
+      
+      socket.on("disconnect", (reason) => {
+        console.log("Socket disconnected:", reason);
+        if (reason === "io server disconnect") {
+          // Server initiated disconnect, try to reconnect
+          socket.connect();
+        }
       });
       
       socket.on("getOnlineUsers", (userIds) => {
@@ -143,6 +166,11 @@ export const useAuthStore = create((set, get) => ({
       set({ socket: socket });
     } catch (error) {
       console.error("Failed to connect socket:", error);
+      toast.error("Failed to initialize chat connection", {
+        style: {
+          color: '#ffffff' 
+        }
+      });
     }
   },
   
