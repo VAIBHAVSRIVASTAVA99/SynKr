@@ -5,7 +5,7 @@ console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
 console.log('Default Socket URL:', "https://synkr-o8iz.onrender.com");
 console.log('Final Socket URL being used:', import.meta.env.VITE_SOCKET_URL || "https://synkr-o8iz.onrender.com");
 
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "https://synkr-o8iz.onrender.com";
+const SOCKET_URL = "https://synkr-o8iz.onrender.com";
 
 const socket = io(SOCKET_URL, {
   autoConnect: false,
