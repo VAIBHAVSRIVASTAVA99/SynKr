@@ -3,11 +3,11 @@ import { axiosInstance } from '../lib/axios';
 import { toast } from 'react-hot-toast';
 import { io } from 'socket.io-client';
 
-const useGroupStore = create((set, get) => {
-  const socket = io(import.meta.env.VITE_SOCKET_URL, {
-    withCredentials: true,
-  });
+const socket = io(import.meta.env.VITE_SOCKET_URL || "https://synkr-o8iz.onrender.com", {
+  withCredentials: true,
+});
 
+const useGroupStore = create((set, get) => {
   return {
     groups: [], 
     selectedGroup: null,
