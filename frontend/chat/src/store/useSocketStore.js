@@ -13,7 +13,7 @@ export const useSocketStore = create((set, get) => ({
   groupMembers: [],
 
   initializeSocket: (userId) => {
-    const socket = io(process.env.REACT_APP_SOCKET_URL || 'http://localhost:5000', {
+    const socket = io(import.meta.env.VITE_SOCKET_URL || 'https://synkr-o8iz.onrender.com', {
       query: { userId },
     });
 

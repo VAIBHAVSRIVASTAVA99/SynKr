@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 import { io } from 'socket.io-client';
 
 const useGroupStore = create((set, get) => {
-  const socket = io(import.meta.env.VITE_SERVER_URL, {
+  const socket = io(import.meta.env.VITE_SOCKET_URL, {
     withCredentials: true,
   });
 
