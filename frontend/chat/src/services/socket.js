@@ -15,10 +15,7 @@ const socket = io(SOCKET_URL, {
   timeout: 10000,
   transports: ['websocket', 'polling'],
   path: '/socket.io/',
-  withCredentials: true,
-  extraHeaders: {
-    "Access-Control-Allow-Origin": "*"
-  }
+  withCredentials: true
 });
 
 let isInitialized = false;
@@ -42,21 +39,21 @@ socket.on("connect_error", (error) => {
   connectionError = error.message;
 });
 
-export const initializeSocket = (token) => {
+export const initializeSocket = (userId) => {
   if (isInitialized && socket.connected) {
     console.log("Socket already initialized and connected");
     return true;
   }
 
   try {
-    if (!token) {
-      console.error("Cannot initialize socket: No auth token available");
-      connectionError = "Authentication token missing";
+    if (!userId) {
+      console.error("Cannot initialize socket: No userId available");
+      connectionError = "User ID missing";
       return false;
     }
     
     socket.io.opts.query = {
-      token
+      userId
     };
     
     console.log("Initializing socket connection...");
@@ -71,12 +68,12 @@ export const initializeSocket = (token) => {
   }
 };
 
-export const reconnectSocket = (token) => {
+export const reconnectSocket = (userId) => {
   if (socket.connected) {
     socket.disconnect();
   }
   
-  return initializeSocket(token);
+  return initializeSocket(userId);
 };
 
 export const disconnectSocket = () => {
