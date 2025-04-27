@@ -73,7 +73,7 @@ const useGroupStore = create((set, get) => {
         if (!socket || !selectedGroup) return;
 
         const response = await axiosInstance.post(
-          `/api/messages/group/${selectedGroup._id}`,
+          `/api/messages/send/${selectedGroup._id}`,
           { ...messageData, groupId: selectedGroup._id }
         );
 
